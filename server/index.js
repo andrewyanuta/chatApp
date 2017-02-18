@@ -29,6 +29,10 @@ io.on('connection', socket => {
     io.emit('newMessage', generateMessage(message.from, message.text))
     return done('This is from the server');
   })
+
+  socket.on('createLocationMessage', coords => {
+    io.emit('newMessage', generateMessage('Admin', `${coords.latitude}, ${coords.longitude}`))
+  })
 })
 
 app.use(express.static(publicPath))
