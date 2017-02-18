@@ -30,12 +30,12 @@ io.on('connection', socket => {
   socket.on('createMessage', (message, done) => {
     message.createdAt = new Date().getTime()
     io.emit('newMessage', generateMessage(message.from, message.text))
-    return done('This is from the server');
+    return done();
   })
 
   socket.on('createLocationMessage', coords => {
     io.emit('newLocationMessage',
-      generateLocationMessage('Admin', coords.latitude, coords.longitude)
+      generateLocationMessage('User', coords.latitude, coords.longitude)
     )
   })
 })
