@@ -24,11 +24,10 @@ io.on('connection', socket => {
     console.log('User was disconnected!')
   })
 
-  socket.on('createMessage', message => {
+  socket.on('createMessage', (message, done) => {
     message.createdAt = new Date().getTime()
-    socket.broadcast.emit('newMessage',
-      generateMessage(message.from, message.text)
-    )
+    io.emit('newMessage', generateMessage(message.from, message.text))
+    return done('This is from the server');
   })
 })
 
