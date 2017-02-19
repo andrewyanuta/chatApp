@@ -11,14 +11,13 @@ describe('generateMessage', () => {
     const text = 'testing message cretation'
 
     const message = generateMessage(from, text)
-
     expect(message.createAt).toBeA('number')
     expect(message).toInclude({ from, text })
   })
 })
 
 describe('generateLocationMessage', () => {
-  it('shuold generate correct locationMessage object', () => {
+  it('should generate correct locationMessage object', () => {
     const from = 'Jhon Doe'
     const longitude = 10
     const latitude = 17
