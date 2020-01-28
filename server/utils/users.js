@@ -17,7 +17,8 @@ class Users {
   }
 
   getUser (id) {
-    return this.users.filter(user => user.id === id)[0]
+    const [user] = this.users.filter(user => user.id === id)
+    return user
   }
 
   getUserList (room) {
