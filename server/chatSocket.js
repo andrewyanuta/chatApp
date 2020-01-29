@@ -27,7 +27,11 @@ const chatSocket = (io) => (socket) => {
 
     socket.join(params.room)
     users.removeUser(socket.id)
-    users.addUser(socket.id, params.name, params.room)
+    users.addUser({
+      id: socket.id,
+      name: params.name,
+      room: params.room,
+    })
 
     io.to(params.room).emit('updateUserList', users.getUserList(params.room))
     socket.emit('newMessage', generateMessage(CHAT_BOT_NAME, 'Welcome to the chat app'))

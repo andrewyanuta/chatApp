@@ -1,33 +1,35 @@
-'use strict'
 class Users {
-  constructor () {
+  constructor() {
     this.users = []
   }
 
-  addUser (id, name, room) {
+  addUser({ id, name, room }) {
     const user = { id, name, room }
     this.users.push(user)
     return user
   }
 
-  removeUser (id) {
+  removeUser(id) {
     const user = this.getUser(id)
-    if (user) this.users = this.users.filter(user => user.id !== id)
+    if (user) this.users = this.users.filter((u) => u.id !== id)
     return user
   }
 
-  getUser (id) {
-    const [user] = this.users.filter(user => user.id === id)
-    return user
+  getUser(id) {
+    return this.users.find((u) => u.id === id)
   }
 
-  getUserList (room) {
+  /**
+   *
+   * @param {String} room
+   */
+  getUserList(room) {
     return this.users
-      .filter(user => user.room === room)
-      .map(user => user.name)
+      .filter((user) => user.room === room)
+      .map((user) => user.name)
   }
 }
 
 module.exports = {
-  Users
+  Users,
 }

@@ -1,43 +1,43 @@
-'use strict'
+
 const expect = require('expect')
 
 const { Users } = require('./users')
 
 describe('Users', () => {
-  let users
+  const controller = new Users()
+  controller.users = [{
+    id: '1',
+    name: 'Mike',
+    room: 'Launge',
+  }, {
+    id: '2',
+    name: 'Jen',
+    room: 'Bar',
+  }, {
+    id: '3',
+    name: 'Julie',
+    room: 'Bar',
+  }]
 
-  beforeEach(() => {
-    users = new Users();
-    users.users = [{
-      id: '1',
-      name: 'Mike',
-      room: 'Node Course'
-    }, {
-      id: '2',
-      name: 'Jen',
-      room: 'React Course'
-    }, {
-      id: '3',
-      name: 'Julie',
-      room: 'Node Course'
-    }]
-  })
 
   it('should add a new user', () => {
-    const users = new Users()
     const user = {
       id: '123',
       name: 'Andrew',
-      room: 'Node Fan'
+      room: 'Launge',
     }
-    const resUser = users.addUser(user.id, user.name, user.room)
-    expect(users.users).toEqual([user])
+    const resUser = controller.addUser(user)
+
+    expect(resUser).toEqual(user)
+    expect(controller.users.length).toEqual(4)
   })
 
   it('should remove a user', () => {
     const userId = '1'
-    const user = users.removeUser(userId)
-    expect(users.users.length).toBe(3)
+    controller.removeUser(userId)
+
+    expect(controller.getUser(userId)).toNotExist()
+    expect(controller.users.length).toBe(3)
   })
 
   it('should not remove user', () => {
@@ -46,20 +46,19 @@ describe('Users', () => {
 
   it('shoud find user', () => {
     const userId = '2'
-    const user = users.getUser(userId)
+    const user = controller.getUser(userId)
 
     expect(user.id).toBe(userId)
   })
 
   it('shoud not find user', () => {
     const userId = '22'
-    const user = users.getUser(userId)
 
-    expect(user).toNotExist()
+    expect(controller.getUser(userId)).toNotExist()
   })
 
-  it('should return names for node course', () => {
-
+  it('should return users from room "Bar"', () => {
+    const list = controller.getUserList('Bar')
+    expect(list.length).toBe(2)
   })
-
 })
