@@ -1,6 +1,6 @@
 const {
-  generateMessage,
-  generateLocationMessage,
+  createMessage,
+  createLocationMessage,
 } = require('./utils/message')
 const {
   isRealString,
@@ -34,9 +34,10 @@ const chatSocket = (io) => (socket) => {
     })
 
     io.to(params.room).emit('updateUserList', users.getUserList(params.room))
-    socket.emit('newMessage', generateMessage(CHAT_BOT_NAME, 'Welcome to the chat app'))
-    socket.broadcast.to(params.room).emit('newMessage',
-      generateMessage(CHAT_BOT_NAME, `${params.name} has joined`))
+    socket.emit('newMessage', createMessage(CHAT_BOT_NAME, 'Welcome to the chat app'))
+    socket.broadcast
+      .to(params.room)
+      .emit('newMessage', createMessage(CHAT_BOT_NAME, `${params.name} has joined`))
 
     return done()
   })
@@ -45,7 +46,7 @@ const chatSocket = (io) => (socket) => {
     const user = users.getUser(socket.id)
 
     if (user && isRealString(message.text)) {
-      io.to(user.room).emit('newMessage', generateMessage(user.name, message.text))
+      io.to(user.room).emit('newMessage', createMessage(user.name, message.text))
     }
     return done()
   })
@@ -54,7 +55,7 @@ const chatSocket = (io) => (socket) => {
     const user = users.getUser(socket.id)
     if (user) {
       io.to(user.room).emit('newLocationMessage',
-        generateLocationMessage(user.name, coords.latitude, coords.longitude))
+        createLocationMessage(user.name, coords.latitude, coords.longitude))
     }
   })
 
@@ -63,7 +64,7 @@ const chatSocket = (io) => (socket) => {
 
     if (user) {
       io.to(user.room).emit('updateUserList', users.getUserList(user.room))
-      io.to(user.room).emit('newMessage', generateMessage(CHAT_BOT_NAME, `${user.name} has left.`))
+      io.to(user.room).emit('newMessage', createMessage(CHAT_BOT_NAME, `${user.name} has left.`))
     }
   })
 }
