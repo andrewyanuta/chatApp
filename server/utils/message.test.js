@@ -1,31 +1,30 @@
-'use strict'
 const expect = require('expect')
 const {
-  generateMessage,
-  generateLocationMessage
+  createMessage,
+  createLocationMessage,
 } = require('./message')
 
 describe('generateMessage', () => {
   it('shuold generate correct message object', () => {
-    const from = 'Jhon Doe'
-    const text = 'testing message cretation'
+    const owner = 'Jhon Doe'
+    const message = 'testing message cretation'
 
-    const message = generateMessage(from, text)
-    expect(message.createAt).toBeA('number')
-    expect(message).toInclude({ from, text })
+    const msg = createMessage(owner, message)
+    expect(msg.createAt).toBeA('number')
+    expect(msg).toInclude({ owner, message })
   })
 })
 
 describe('generateLocationMessage', () => {
   it('should generate correct locationMessage object', () => {
-    const from = 'Jhon Doe'
+    const owner = 'Jhon Doe'
     const longitude = 10
     const latitude = 17
     const url = `https://www.google.com/maps/?q=${latitude},${longitude}`
 
-    const message = generateLocationMessage(from, latitude, longitude)
+    const msg = createLocationMessage(owner, latitude, longitude)
 
-    expect(message.createAt).toBeA('number')
-    expect(message).toInclude({ from, url })
+    expect(msg.createAt).toBeA('number')
+    expect(msg).toInclude({ owner, url })
   })
 })
